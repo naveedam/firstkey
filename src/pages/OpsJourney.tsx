@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { supabase } from '../lib/supabase'
+import { actionFor } from '../lib/actions'
 import {
   KIND_LABEL, OPTION_STATUS_LABEL, STAGE_LABEL, fmtDate, priceLabel,
   type OptionPurpose, type OptionRow, type Prefs, type Property, type Stage,
@@ -68,10 +69,12 @@ export default function OpsJourney() {
 
   const has = (pid: string, purpose: OptionPurpose) => options.some(o => o.purpose === purpose && o.properties?.id === pid)
   const e = j.employees
+  const todo = actionFor(j.stage, options.filter(o => o.status === 'selected').map(o => o.purpose))
 
   return (
     <Layout title={e?.full_name ?? 'Relocation'} action={<Link to="/ops" className="link">All relocations</Link>}>
       {error && <p className="error" role="alert">{error}</p>}
+      {todo && <p className="notice">{todo}</p>}
       <p className="muted">{j.companies?.name}. {e?.email}. Moving from {e?.from_city || 'an unspecified city'}, office {e?.office_name || 'not set'}, {e?.family_size} {e?.family_size === 1 ? 'person' : 'people'}. {j.needed_from ? `Stay starts ${fmtDate(j.needed_from)}.` : 'Start date not set.'}</p>
 
       <section className="block">
