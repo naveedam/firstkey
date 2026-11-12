@@ -8,7 +8,12 @@ export default function OpsHome() {
     <Layout title="All relocations">
       {error && <p className="error">{error}</p>}
       {loading ? <p className="muted">Loading relocations…</p> : (
-        <JourneyList rows={rows} showCompany empty="No relocations yet. They appear here when a company's HR team raises a request." />
+        <JourneyList
+          rows={rows}
+          showCompany
+          href={r => `/ops/journeys/${r.id}`}
+          empty="No relocations yet. They appear here when a company's HR team raises a request."
+        />
       )}
     </Layout>
   )

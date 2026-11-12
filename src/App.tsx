@@ -5,6 +5,7 @@ import { configured } from './lib/supabase'
 import type { Role } from './lib/types'
 import Login from './pages/Login'
 import OpsHome from './pages/OpsHome'
+import OpsJourney from './pages/OpsJourney'
 import HrHome from './pages/HrHome'
 import NewRequest from './pages/NewRequest'
 import EmployeeHome from './pages/EmployeeHome'
@@ -41,6 +42,7 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Landing />} />
       <Route path="/ops" element={<Guard allow={['ops']}><OpsHome /></Guard>} />
+      <Route path="/ops/journeys/:id" element={<Guard allow={['ops']}><OpsJourney /></Guard>} />
       <Route path="/hr" element={<Guard allow={['hr_admin']}><HrHome /></Guard>} />
       <Route path="/hr/new" element={<Guard allow={['hr_admin']}><NewRequest /></Guard>} />
       <Route path="/me" element={<Guard allow={['employee']}><EmployeeHome /></Guard>} />

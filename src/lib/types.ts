@@ -66,3 +66,61 @@ export const inr = (n: number) => `₹${n.toLocaleString('en-IN')}`
 
 export const fmtDate = (d: string | null) =>
   d ? new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Not set'
+
+export type OptionPurpose = 'landing' | 'rental'
+export type OptionStatus = 'proposed' | 'shortlisted' | 'selected' | 'rejected'
+
+export interface Property {
+  id: string
+  name: string
+  kind: string
+  locality: string | null
+  lat: number | null
+  lng: number | null
+  nightly_rate: number | null
+  monthly_rent: number | null
+  deposit_months: number | null
+  bhk: number | null
+  furnished: boolean | null
+}
+
+export interface OptionRow {
+  id: string
+  journey_id: string
+  purpose: OptionPurpose
+  status: OptionStatus
+  ops_note: string | null
+  properties: Property | null
+}
+
+export interface Prefs {
+  budget_min: number | null
+  budget_max: number | null
+  bhk: number | null
+  furnished: boolean | null
+  max_commute_min: number | null
+  areas: string[]
+  notes: string | null
+}
+
+export const KIND_LABEL: Record<string, string> = {
+  serviced_apartment: 'Serviced apartment',
+  hotel: 'Hotel or aparthotel',
+  coliving: 'Co-living',
+  pg: 'PG',
+  furnished_flat: 'Furnished flat',
+  unfurnished_flat: 'Unfurnished flat',
+}
+
+export const OPTION_STATUS_LABEL: Record<OptionStatus, string> = {
+  proposed: 'New',
+  shortlisted: 'Considering',
+  selected: 'Chosen',
+  rejected: 'Not for me',
+}
+
+export function priceLabel(p: Property, purpose: OptionPurpose): string {
+  if (purpose === 'landing') return p.nightly_rate ? `${inr(p.nightly_rate)} a night` : 'Price on request'
+  const rent = p.monthly_rent ? `${inr(p.monthly_rent)} a month` : 'Price on request'
+  return p.deposit_months ? `${rent}, ${p.deposit_months} months deposit` : rent
+}
